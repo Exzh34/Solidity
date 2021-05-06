@@ -1,2 +1,2 @@
 # Solidity
-Notes while learning solidity
+Notes and simple code made while learning solidity
