@@ -1,3 +1,3 @@
 # Solidity
-Notes and simple code made while learning solidity
-<p>Zombie generator is the final result from https://cryptozombies.io/ Lesson 1</p>
+<h3>Notes and simple code made while learning solidity</h3>
+<p><hZombie generator is the final result from https://cryptozombies.io/ Lesson 1</p>
