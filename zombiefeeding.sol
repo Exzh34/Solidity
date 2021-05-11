@@ -21,7 +21,7 @@ contract ZombieFeeding is ZombieFactory {
 
   KittyInterface kittyContract; 
   
-  modifer ownerOf(uint _zombieId){ // creates modifier to check the owner
+  modifier ownerOf(uint _zombieId){ // creates modifier to check the owner
     require(msg.sender == zombieToOwner[_zombieId]); // require see is the person is the owner of the zombie 
     _;
   }
@@ -38,7 +38,7 @@ contract ZombieFeeding is ZombieFactory {
       return (_zombie.readyTime <= now); 
   }
 
-    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwner { // function for feeding the zombie on cryptokittie
+    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf { // function for feeding the zombie on cryptokittie
     Zombie storage myZombie = zombies[_zombieId];
     require(_isReady(myZombie)); // check if zombie is ready to be fed 
     _targetDna = _targetDna % dnaModulus; // checks for 16 integer dna count 
