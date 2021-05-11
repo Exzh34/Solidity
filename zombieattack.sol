@@ -20,6 +20,10 @@ contract ZombieAttack is ZombieHelper {
       myZombie.level++; // increments level 
       enemyZombie.lossCount++; // increments to the enemy zombie loss
       feedAndMultiply(_zombieId,enemyZombie.dna,"zombie"); // calls feed and multiply function given zombieid, enemyzombiedna and zombie species
+    }else {
+      myZombie.lossCount++; // adds one to the loss count
+      enemyZombie.winCount++; // adds one to the enmy zombie win count 
+      _triggerCooldown(myZombie); // triggers cooldown
     }
   }
 }
