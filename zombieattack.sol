@@ -10,7 +10,10 @@ contract ZombieAttack is ZombieHelper {
     randNonce++; // increments randNonce 
     return uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % _modulus; // calculates uint typecast of the keccak256 hash
   }
-  function attack(uint _zombieId, uint _targetId) external { // attack function
-
+  function attack(uint _zombieId, uint _targetId) external ownerOf(_zombieId){
+    // 2. Start function definition here
+    Zombie storage myZombie = zombies[_zombieId]; // storage pointer to friendly zombie
+    Zombie storage enemyZombie = zombies[_targetId]; // storage pointer to enemy zombie 
+    uint rand = randMod(100);
   }
 }
