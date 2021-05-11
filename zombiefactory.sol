@@ -1,39 +1,46 @@
 pragma solidity >=0.5.0 <0.6.0;
 
-contract ZombieFactory {
+import "./ownable.sol";
 
-    event NewZombie(uint zombieId, string name, uint dna); // event to store zombie information
+contract ZombieFactory is Ownable {
 
-    uint dnaDigits = 16; // zombie dna 16 digits int
-    uint dnaModulus = 10 ** dnaDigits; // 10 to the power of 16
+    event NewZombie(uint zombieId, string name, uint dna); // event for the creation of new zombie
 
-    struct Zombie { // structure of the zombie
-        string name;
-        uint dna;
+    uint dnaDigits = 16; // size of dna
+    uint dnaModulus = 10 ** dnaDigits; // dna mod 16
+    uint cooldownTime = 1 days; // cooldown time
+
+    struct Zombie { // zombie structrure 
+      string name;
+      uint dna;
+      uint32 level;
+      uint32 readyTime;
+      uint16 winCount;
+      uint16 lossCount; 
     }
 
-    Zombie[] public zombies; // array using zombie struct 
+    Zombie[] public zombies; // zombie array
 
-    mapping (uint => address) public zombieToOwner; //maping a zombie to an owner
-    mapping (address => uint) ownerZombieCount; // maping how many zombies the owner has 
+    mapping (uint => address) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
 
-    function _createZombie(string memory _name, uint _dna) private { // creates zombies
-        uint id = zombies.push(Zombie(_name, _dna)) - 1; // counts the array
-        zombieToOwner[id] = msg.sender; // attributes an id to a zombie
+    function _createZombie(string memory _name, uint _dna) internal { // function to create a zombie
+        uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) -1; // adds the attributes to the uint id
+        zombieToOwner[id] = msg.sender; // attributes the zombie based on id to the owner
         ownerZombieCount[msg.sender]++; // adds one to the zombie count
-        emit NewZombie(id, _name, _dna); // adds zombie information to the new zombie event 
+        emit NewZombie(id, _name, _dna); // calls event to create a new zombie
     }
 
-    function _generateRandomDna(string memory _str) private view returns (uint) { // function to generate random dna
-        uint rand = uint(keccak256(abi.encodePacked(_str))); // sets random dna using eth based hash function
-        return rand % dnaModulus; //  returns dna mod 16
+    function _generateRandomDna(string memory _str) private view returns (uint) { // generate random dna using keccak256 hash 
+        uint rand = uint(keccak256(abi.encodePacked(_str)));
+        return rand % dnaModulus;
     }
 
-    function createRandomZombie(string memory _name) public { // creates new random zombie
-        require(ownerZombieCount[msg.sender] == 0); // set a requirement owner must have 0 zombies to create a new one
-        uint randDna = _generateRandomDna(_name); // generates random dna to the zombie stores it in randDna
-        _createZombie(_name, randDna); // calls createzombie and attributes the values
+    function createRandomZombie(string memory _name) public { // creates random zombie
+        require(ownerZombieCount[msg.sender] == 0); // see if the person is the owner of the zombie
+        uint randDna = _generateRandomDna(_name); // generates random dna based on name 
+        randDna = randDna - randDna % 100;
+        _createZombie(_name, randDna); // calls function createzombie with the given attributes 
     }
 
 }
-
