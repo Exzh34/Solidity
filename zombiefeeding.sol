@@ -19,27 +19,36 @@ contract KittyInterface {
 
 contract ZombieFeeding is ZombieFactory {
 
-  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-  KittyInterface kittyContract = KittyInterface(ckAddress);
+  KittyInterface kittyContract; 
 
-  // Modify function definition here:
-  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) public {
-    require(msg.sender == zombieToOwner[_zombieId]);
+  function setKittyContractAddress(address _address) external onlyOwner { // function takes the address, external modifier from onlyOwner
+    kittyContract = KittyInterface(_address); // sets kittycontract to the address on kitty interface
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal { // function to trigger a cooldown on level up
+    _zombie.readyTime = uint32(now + cooldownTime); // calculates the cooldown time attributes it to _zombie.readyTime
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool) { // check if cooldown has ended 
+      return (_zombie.readyTime <= now); 
+  }
+
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal { // function for feeding the zombie on cryptokittie
+    require(msg.sender == zombieToOwner[_zombieId]); //checks if the person is the owner of the zombie
     Zombie storage myZombie = zombies[_zombieId];
-    _targetDna = _targetDna % dnaModulus;
-    uint newDna = (myZombie.dna + _targetDna) / 2;
-    // Add an if statement here
-    if (keccak256(abi.encodePacked(_species)) == keccak256(abi.encodePacked("kitty"))) {
+    require(_isReady(myZombie)); // check if zombie is ready to be fed 
+    _targetDna = _targetDna % dnaModulus; // checks for 16 integer dna count 
+    uint newDna = (myZombie.dna + _targetDna) / 2; // adds zombie dna + the target dna and divides by 2 to get 16 int
+    if (keccak256(abi.encodePacked(_species)) == keccak256(abi.encodePacked("kitty"))) { // condition checks for species is kitty
       newDna = newDna - newDna % 100 + 99;
     }
-    _createZombie("NoName", newDna);
+    _createZombie("NoName", newDna); // creates new zombie with the new dna 
+    _triggerCooldown(myZombie); // triggers the cooldown so it dont gets abused
   }
 
-  function feedOnKitty(uint _zombieId, uint _kittyId) public {
-    uint kittyDna;
-    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
-    // And modify function call here:
-    feedAndMultiply(_zombieId, kittyDna,"kitty");
+  function feedOnKitty(uint _zombieId, uint _kittyId) public { // function for kitty feeding 
+    uint kittyDna; 
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId); // attributes the kitty dna to a kitty ID 
+    feedAndMultiply(_zombieId, kittyDna, "kitty"); // passes the parameters to feed and multiply function
   }
-
 }
