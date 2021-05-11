@@ -8,6 +8,13 @@ contract ZombieHelper is ZombieFeeding {
     require(zombies[_zombieId].level >= _level); // requires zombie to be bigger or equal than a defined level
     _; // executes the rest of the function on modifier is called 
   }
+  function withdraw() external onlyOwner { // function to withdraw the ether received 
+    address payable _owner = address(uint160(owner())); //makes owner a type address payable by using uint160
+    _owner.transfer(address(this).balance); // transfers the ether to owner and returns the total balance 
+  }
+  function setLevelUpFee(uint _fee) external onlyOwner{ // function for the level up fee
+    levelUpFee = _fee;
+  }
 
   function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) { // function for changing zombie name when zombie level = 2 using previous modifier
     require(msg.sender == zombieToOwner[_zombieId]); //  checks if the person is the owner of the zombie
