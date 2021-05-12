@@ -12,5 +12,5 @@
 <p> <h4>Constant:</h4> Keyword added to a variable that tells solidity it cannot be changed </p>
 <p> <h4>Struct:</h4> Struct types are used to represent a record. Allow to create our own data type </p>
 <p> <h4>Enum:</h4> Enums restrict variables to have one of the only few predefined values. The values in this enumerated list are called enums. </p>
-<p> <h4> Arrays:</h4> "Player[] public players;" creates and array called players of the struct Player.</p>
-  
+<p> <h4>Arrays:</h4> "Player[] public players;" creates and array called players of the struct Player.</p>
+<p> <h4>Modifier:</h4> Can be used to change the behaviour of functions in a declarative way, for example you can use a modifier to automatically check a condition prior to executing the function, it is also inheritable between contracts.</p>
