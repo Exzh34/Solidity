@@ -1,5 +1,6 @@
 # Solidity
 <h3>Notes and simple code made while learning solidity</h3>
+<h3> Moralis begginer stuff is based on https://www.youtube.com/channel/UCgWS9Q3P5AxCWyQLT2kQhBw/playlists </h3>
 <p><h3>Zombie stuff based on learning guide @ https://cryptozombies.io/</h4></p>
 <p> <h4>Address:</h4> Every account and smart contract has an address. It is used to send and receive Ether from one account to another. Basically your public identity on the blockchain</p>
 <p> <h4>Mapping:</h4> Data type used to store associations. Similar to a list but it holds 2 values, and allows to quickcly get the value corresponding to the key </p>
