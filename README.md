@@ -9,4 +9,8 @@
 <p> <h4>Constructor:</h4> Function that is runned directly when the contract is created, this functions runs only once</p>
 <p> <h4>Msg:</h4> Keyword that allows us to access some special variables that are available for us from the blockchain </p>
 <p> <h4>Require:</h4> Convenience function in solidity. It guarantees validity of conditions that cannot be detected before execution </p>
-
+<p> <h4>Constant:</h4> Keyword added to a variable that tells solidity it cannot be changed </p>
+<p> <h4>Struct:</h4> Struct types are used to represent a record. Allow to create our own data type </p>
+<p> <h4>Enum:</h4> Enums restrict variables to have one of the only few predefined values. The values in this enumerated list are called enums. </p>
+<p> <h4> Arrays:</h4> "Player[] public players;" creates and array called players of the struct Player.</p>
+  
